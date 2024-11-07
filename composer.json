@@ -1,0 +1,19 @@
+{
+    "name": "bpandof/app-salon",
+    "description": "Proyecto PHP 8, MVC, SQL, SASS, Gulp",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "MVC\\" : "./",
+            "Controllers\\" : "./controllers",
+            "Model\\" : "./models",
+            "Classes\\" : "./classes"
+        }
+    },
+    "authors": [
+        {
+            "name": "bpandofdesarrollador"
+        }
+    ],
+    "require": {}
+}

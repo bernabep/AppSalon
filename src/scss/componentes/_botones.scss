@@ -3,5 +3,6 @@
 
 .boton{
     @include m.boton(v.$azul,v.$blanco);
-    border-radius: 1rem;
+    & {border-radius: 1rem;
+    }
 }

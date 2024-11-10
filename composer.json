@@ -15,5 +15,7 @@
             "name": "bpandofdesarrollador"
         }
     ],
-    "require": {}
+    "require": {
+        "phpmailer/phpmailer": "^6.9"
+    }
 }

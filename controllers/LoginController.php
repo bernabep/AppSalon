@@ -1,6 +1,8 @@
 <?php
 namespace Controllers;
 
+use Classes\Email;
+use Model\Usuario;
 use MVC\Router;
 
 class LoginController{
@@ -21,18 +23,50 @@ class LoginController{
     }
 
     public static function crear(Router $router){
-        
+        $usuario = new Usuario;
+        $alertas = [];
+
         if($_SERVER["REQUEST_METHOD"] === 'POST'){
-            $datos_usuario = [];
-            $datos_usuario[] = $_POST['nombre'];
-            $datos_usuario[] = $_POST['apellido'];
-            $datos_usuario[] = $_POST['telefono'];
-            $datos_usuario[] = $_POST['email'];
-            $datos_usuario[] = $_POST['password'];
+            $usuario->sincronizar($_POST);
+            $alertas =  $usuario->validarNuevaCuenta();
+            //Revisar que no hay alertas
+            if(empty($alertas)){
+                //Verificar que el usuario no esté verificado
+                $resultado = $usuario->existeUsuario();
+                if($resultado->num_rows){
+                    $alertas = Usuario::getAlertas();
+                }else{
+                    //Hashear el password
+                    $usuario->hashPassword();
+                    
+                    //Generar un Token único
+                    $usuario->crearToken();
+                    // debuguear($usuario);
+                    //Enviar el email
+                    $email = new Email($usuario->email,$usuario->nombre,$usuario->token);
+
+                    $email->enviarConfirmacion();
+                }
+            
+            }
+            
+            
+
             
             
         };
-        $router->render('auth/crear-cuenta',[]);
+        $router->render('auth/crear-cuenta',[
+            'usuario' =>$usuario,
+            'alertas' =>$alertas
+        ]);
         
+    }
+
+    public static function confirmar(Router $router){
+        if($_SERVER['REQUEST_METHOD']=='GET'){
+            $token = $_GET['token'];
+            debuguear($token);
+        }
+
     }
 }

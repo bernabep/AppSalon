@@ -44,6 +44,8 @@ class Email
             $contenido .= "<p>Si tu no solicitaste esta cuenta, puedes ignorar el mensaje</p>";
             $contenido .= "</html>";
 
+            $mail->Body = $contenido;
+
             $mail->send();
             echo 'Message has been sent';
         } catch (Exception $e) {

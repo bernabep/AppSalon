@@ -57,8 +57,32 @@ class Usuario extends ActiveRecord{
         return self::$alertas;
     }
 
-    public function validarToken(){
-        
+    public function validarPassword(){
+        $patron = "/^(?=.*[!@#$%^&*()_+=-?<>]).{8,}$/";
+        if(!$this->password){
+            self::$alertas['error'][] = 'El Password es Obligatorio';
+        }
+        if(!preg_match($patron,$this->password)){
+            self::$alertas['error'][] = 'La contraseña no es válida. Debe tener al menos 8 caracteres y un carácter especial';
+        }
+        return self::$alertas;
+    }
+
+    public function validarLogin(){
+        if(!$this->email){
+            self::$alertas['error'][]= "El email es obligatorio";
+        }
+        if(!$this->password){
+            self::$alertas['error'][]= "El Password es obligatorio";
+        }
+        return self::$alertas;
+    }
+
+    public function validarEmail(){
+        if(!$this->email){
+            self::$alertas['error'][]= "El email es obligatorio";
+        }
+        return self::$alertas;
     }
 
     //Revisa si el usuario ya existe
@@ -81,6 +105,20 @@ class Usuario extends ActiveRecord{
         $this->token = uniqid();
     }
 
-    
+    public function comprobarPasswordAndVerificado($password){
+        $respuesta = password_verify($password,$this->password);
+
+        if(!$respuesta){
+            Usuario::setAlerta('error','El password es incorrecto');
+            return false;
+        }else{
+            if(!$this->confirmado){
+                Usuario::setAlerta('error','La cuenta no ha sido confirmada');
+                return false;
+            }else{
+                return True;
+            }
+        }   
+    }
 }
 

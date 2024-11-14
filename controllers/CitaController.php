@@ -4,7 +4,13 @@ use MVC\Router;
 
 Class CitaController{
     public static function index(Router $router){
-        $router->render('cita/index',[]);
+        if(!isset($_SESSION)){
+            session_start();
+        }  
+        $nombre = $_SESSION['nombre'];
+        $router->render('cita/index',[
+            'nombre'=>$nombre
+        ]);
 
     }
 }

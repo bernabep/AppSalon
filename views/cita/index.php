@@ -35,5 +35,9 @@
     <h1>Resumen</h1>
     <p class="text-center">Verifica que la información sea correcta</p>
     </div>
-
+    <div class="paginacion">
+        <button id="anterior;" class="boton">Anterior &laquo</button>
+        <button id="siguiente" class="boton">Siguiente &raquo</button>
+    </div>
 </div>
+<?php $script = "<script src='build/js/app.js'></script>" ?>

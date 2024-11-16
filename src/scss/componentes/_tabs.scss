@@ -10,16 +10,15 @@
         color: v.$blanco;
         border: none;
         padding: 1rem;
-        margin: 1rem;
+        margin-bottom: 1rem;
         display: block;
         width: 100%;
         text-transform: uppercase;
         font-weight: v.$bold;
-        transition: background-color 300ms ease;
-        border-radius: 0.5rem;
+        transition: background-color 300ms ease;        
         &:hover{
             cursor: pointer;
-            background-color: darken($color: v.$azul, $amount: 10%);
+            background-color: darken($color: v.$azul, $amount: 20%);
         }
         &.actual{
             background-color: v.$blanco;

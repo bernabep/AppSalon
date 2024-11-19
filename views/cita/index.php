@@ -18,20 +18,20 @@
     <form class="formulario">
         <div class="campo">
             <label for="nombre">Nombre</label>
-            <input id="nombre"  type="text" name="nombre" value="<?php echo $nombre;?> " disabled>
+            <input id="nombre"  type="text" name="nombre" value="<?php echo $nombre;?>" disabled>
         </div>
         <div class="campo">
             <label for="fecha">fecha</label>
-            <input id="fecha"  type="date" name="fecha">
+            <input id="fecha"  type="date" name="fecha" min="<?php echo date('Y-m-d',strtotime('+1 day'))?>">
         </div>
         <div class="campo">
             <label for="hora">Hora</label>
-            <input id="hora"  type="time" name="hora">
+            <input id="hora"  type="time" name="hora">            
         </div>
     </form>
     
     </div>
-    <div id="paso-3" class="seccion">
+    <div id="paso-3" class="seccion contenido-resumen">
     <h1>Resumen</h1>
     <p class="text-center">Verifica que la información sea correcta</p>
     </div>

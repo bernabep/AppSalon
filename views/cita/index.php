@@ -28,6 +28,7 @@
             <label for="hora">Hora</label>
             <input id="hora"  type="time" name="hora">            
         </div>
+        <input type=hidden id='id' value='<?php echo $id; ?>'>
     </form>
     
     </div>
@@ -40,4 +41,7 @@
         <button id="siguiente" class="boton">Siguiente &raquo</button>
     </div>
 </div>
-<?php $script = "<script src='build/js/app.js'></script>" ?>
+<?php $script = "
+<script src='https://cdn.jsdelivr.net/npm/sweetalert2@11'></script>
+<script src='build/js/app.js'></script>
+" ?>

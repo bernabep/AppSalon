@@ -2,6 +2,7 @@ let paso = 1;
 const pasoInicial = 1;
 const pasoFinal = 3;
 const cita = {
+  id: "",
   nombre: "",
   fecha: "",
   hora: "",
@@ -19,6 +20,7 @@ function iniciarApp() {
   paginaSiguiente();
   paginaAnterior();
   consultaAPI(); //Consulta la API
+  idCliente(); //Añade el nombre del cliente al objeto de cita
   nombreCliente(); //Añade el nombre del cliente al objeto de cita
   seleccionarFecha(); //Añade la fecha de la cita al objeto de cita
   seleccionarHora(); //Añade la hora de la cita al objeto de cita
@@ -121,7 +123,7 @@ function mostrarServicios(servicios) {
 
     const contenedorDiv = document.createElement("DIV");
     contenedorDiv.dataset.idServicio = id;
-    contenedorDiv.classList.add("contenedor-servicio");
+    contenedorDiv.classList.add("servicio");
     contenedorDiv.appendChild(nombreServicio);
     contenedorDiv.appendChild(precioServicio);
     contenedorDiv.onclick = function () {
@@ -147,6 +149,9 @@ function seleccionarServicio(servicio) {
   }
 }
 
+function idCliente() {
+  cita.id = document.querySelector("#id").value;
+}
 function nombreCliente() {
   cita.nombre = document.querySelector("#nombre").value;
 }
@@ -154,8 +159,7 @@ function nombreCliente() {
 function seleccionarFecha() {
   const inputFecha = document.querySelector("#fecha");
   const hoy = new Date().getDate();
-  console.log(hoy);
-  inputFecha.addEventListener("input", function (e) {
+    inputFecha.addEventListener("input", function (e) {
     const dia = new Date(e.target.value).getUTCDay();
     if ([0, 6].includes(dia)) {
       e.target.value = "";
@@ -180,6 +184,7 @@ function seleccionarHora() {
 }
 
 function mostrarAlerta(mensaje, tipo, elemento, desaparece = true) {
+  
   //Previene que se generen más de 1 alerta
   const alertaPrevia = document.querySelector(".alerta");
   if (alertaPrevia){
@@ -191,7 +196,6 @@ function mostrarAlerta(mensaje, tipo, elemento, desaparece = true) {
   alerta.textContent = mensaje;
   alerta.classList.add("alerta");
   alerta.classList.add(tipo);
-  console.log(alerta);
   const referencia = document.querySelector(elemento);
   referencia.appendChild(alerta);
 
@@ -205,7 +209,13 @@ function mostrarAlerta(mensaje, tipo, elemento, desaparece = true) {
 
 function mostrarResumen() {
   const resumen = document.querySelector(".contenido-resumen");
-  console.log(cita);
+
+  //Limpiar el contenido Resumen
+  while(resumen.firstChild){
+    resumen.removeChild(resumen.firstChild);
+  }
+
+  
   if (Object.values(cita).includes("") || cita.servicios.length === 0) {
     mostrarAlerta(
       "hacen falta datos de servicio, fecha u hora",
@@ -213,7 +223,111 @@ function mostrarResumen() {
       ".contenido-resumen",
       false
     );
-  } else {
-    console.log("Todo bien");
+    return;
+  } 
+
+  //Formatear el div de Resumen 
+  const {nombre,fecha,hora,servicios} = cita;
+  //Creo encabezado de resumen servicios
+  const headingServicios = document.createElement('H3');
+  headingServicios.textContent = "Resumen de Servicios"
+
+  resumen.appendChild(headingServicios);
+
+  servicios.forEach(servicio=>{
+    const {id,nombre,precio} = servicio;
+    const contenedorServicio = document.createElement('DIV');
+    contenedorServicio.classList.add('contenedor-servicio');
+
+    const textoServicio = document.createElement('P');
+    textoServicio.textContent = nombre;
+
+    const precioServicio = document.createElement('P');
+    precioServicio.innerHTML = `<span>Precio:</span> $${precio}`;
+
+    contenedorServicio.appendChild(textoServicio);
+    contenedorServicio.appendChild(precioServicio);
+    resumen.appendChild(contenedorServicio);
+  })
+
+  //Creo encabezado 
+  const headingCita = document.createElement('H3');
+  headingCita.textContent = "Resumen de Cita"
+
+  resumen.appendChild(headingCita);
+  const nombreCliente = document.createElement('P');
+  nombreCliente.innerHTML = `<span>Nombre:</span> ${nombre}`;
+
+  //Formatemos fecha
+  const fechaObj = new Date(fecha);
+  const dia = fechaObj.getDate();
+  const mes = fechaObj.getMonth();
+  const anno = fechaObj.getFullYear();
+  const fechaUTC = new Date(Date.UTC(anno,mes,dia));
+  const opciones = {weekday:'long',year:'numeric',month:'long',day:'numeric'};
+  const fechaFormateada = fechaUTC.toLocaleString('es-ES',opciones)
+
+  const fechaCita = document.createElement('P');
+  fechaCita.innerHTML = `<span>Fecha:</span> ${fechaFormateada}`;
+  const horaCita = document.createElement('P');
+  horaCita.innerHTML = `<span>Hora:</span> ${hora} Horas`;
+
+  //Añadiendo boton reservar cita
+  const botonReservar = document.createElement('BUTTON');
+  botonReservar.classList.add('boton');
+  botonReservar.textContent = 'Reservar Cita';
+  botonReservar.onclick = reservarCita;
+
+  resumen.appendChild(nombreCliente);
+  resumen.appendChild(fechaCita);
+  resumen.appendChild(horaCita);
+  resumen.appendChild(botonReservar);
+  
+}
+
+async function reservarCita(){
+  const {nombre,fecha,hora,servicios,id} = cita;
+  const idServicios = servicios.map(servicio=>servicio.id)
+  const datos = new FormData();
+  datos.append('usuarioId',id);
+  datos.append('fecha',fecha);
+  datos.append('hora',hora);
+  datos.append('servicios',idServicios);
+  
+  try {
+    //Petición hacia la API
+  const url = 'http://localhost:3000/api/citads';
+  const respuesta = await fetch(url,{
+    method:'POST',
+    body: datos
+  });
+
+  const resultado = await respuesta.json();
+  console.log(resultado.resultado);
+
+  if(resultado.resultado){
+    Swal.fire({
+      icon: "success",
+      title: "Cita Creada",
+      text: "Tu cita fue creada correctamente",
+      button: "OK"
+    }).then(()=>{
+      setTimeout(() => {
+        window.location.reload();        
+      }, 2000);
+    } );
   }
+  } catch (error) {
+    Swal.fire({
+      icon: "error",
+      title: "Error",
+      text: "Hubo un error"
+    });
+  }
+  
+
+  
+
+
+  // console.log([...datos])
 }

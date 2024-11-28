@@ -22,4 +22,17 @@
         margin: 0 auto;
         padding: 3rem 0;
     }
+    .barra{
+        margin: v.$separacion;
+
+        @include m.tablet{
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .boton{
+            background-color: v.$negro;
+            color: v.$blanco;
+        }
+    }
 }

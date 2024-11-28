@@ -1,5 +1,6 @@
 @use 'base/variables' as v;
 @use 'base/mixins' as m;
+@use "sass:color";
 
 .tabs{
     @include m.tablet{
@@ -18,7 +19,9 @@
         transition: background-color 300ms ease;        
         &:hover{
             cursor: pointer;
-            background-color: darken($color: v.$azul, $amount: 20%);
+            background-color: color.adjust($color: v.$azul, $lightness: 20%);
+
+            
         }
         &.actual{
             background-color: v.$blanco;

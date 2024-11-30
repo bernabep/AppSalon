@@ -8,33 +8,34 @@
         @include m.grid(2,2rem)
 
     }
+    .servicio{
 
-}
-.servicio{
-
-    background-color: v.$blanco;
-    border-radius: 1rem;
-    padding: 2rem;
-    text-align: center;
-    transition-property: transform;
-    transition-duration: 300ms;
-    p{
-        color: v.$negro;
-        margin: 0 0 calc(v.$separacion/4) 0;
-    }
-    .precio-servicio{
-        color: v.$azul;
-        font-size: 3rem;
-        font-weight: v.$bold;
-        margin: 0;
-    }
-    &:hover{
-        transform: scale(1.1);
-    }
-    &.seleccionado{
-        background-color: v.$azul;
+        background-color: v.$blanco;
+        border-radius: 1rem;
+        padding: 2rem;
+        text-align: center;
+        transition-property: transform;
+        transition-duration: 300ms;
         p{
-            color: v.$blanco;
+            color: v.$negro;
+            margin: 0 0 calc(v.$separacion/4) 0;
+        }
+        .precio-servicio{
+            color: v.$azul;
+            font-size: 3rem;
+            font-weight: v.$bold;
+            margin: 0;
+        }
+        &:hover{
+            transform: scale(1.1);
+        }
+        &.seleccionado{
+            background-color: v.$azul;
+            p{
+                color: v.$blanco;
+            }
         }
     }
+
 }
+

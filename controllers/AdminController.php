@@ -10,6 +10,16 @@ Class Admincontroller{
             session_start();
         }
         isAuth();
+
+        $fecha = $_GET['fecha'] ?? date('Y-m-d');
+        $fechas = explode('-',$fecha);
+        if(!checkdate($fechas[1],$fechas[2],$fechas[0])){
+            header('Location: /404');
+        }
+        ;
+    
+
+
         
         $query = "SELECT ";
         $query .= "citas.id,citas.hora, ";
@@ -22,15 +32,15 @@ Class Admincontroller{
         $query .= "LEFT JOIN citasservicios ON citas.id = citasservicios.citaId ";
         $query .= "LEFT JOIN usuarios ON  usuarios.id = citas.usuarioId ";
         $query .= "LEFT JOIN servicios ON servicios.id = citasservicios.servicioId ";
-        // $query .= "WHERE ";
-        // $query .= "citas.fecha = '2024-11-28'";
+        $query .= "WHERE citas.fecha = '" . $fecha . "'";
         $nombre = $_SESSION['nombre'];
         // debuguear($query);
         $citas = AdminCita::SQL($query);
         
         $router->render('admin/index',[
             'nombre' => $nombre,
-            'citas' => $citas
+            'citas' => $citas,
+            'fecha'=>$fecha
         ]);
 
     }

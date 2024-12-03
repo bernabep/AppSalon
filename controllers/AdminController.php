@@ -1,27 +1,26 @@
 <?php
+
 namespace Controllers;
 
 use Model\AdminCita;
 use MVC\Router;
 
-Class Admincontroller{
-    public static function index(Router $router){
-        if(!isset($_SESSION)){
+class Admincontroller
+{
+    public static function index(Router $router)
+    {
+        if (!isset($_SESSION)) {
             session_start();
         }
         // isAuth();
         isAdmin();
 
         $fecha = $_GET['fecha'] ?? date('Y-m-d');
-        $fechas = explode('-',$fecha);
-        if(!checkdate($fechas[1],$fechas[2],$fechas[0])){
+        $fechas = explode('-', $fecha);
+        if (!checkdate($fechas[1], $fechas[2], $fechas[0])) {
             header('Location: /404');
-        }
-        ;
-    
+        };
 
-
-        
         $query = "SELECT ";
         $query .= "citas.id,citas.hora, ";
         $query .= "CONCAT_WS(' ',usuarios.nombre,usuarios.apellido) AS cliente,";
@@ -37,14 +36,11 @@ Class Admincontroller{
         $nombre = $_SESSION['nombre'];
         // debuguear($query);
         $citas = AdminCita::SQL($query);
-        
-        $router->render('admin/index',[
+
+        $router->render('admin/index', [
             'nombre' => $nombre,
             'citas' => $citas,
-            'fecha'=>$fecha
+            'fecha' => $fecha
         ]);
-
     }
 }
-
-?>

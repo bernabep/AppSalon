@@ -1,4 +1,5 @@
 <h1 class="nombre-pagina">Panel de Administración</h1>
+<p class="descripcion-pagina">Administración de citas</p>
 <?php
 include_once __DIR__ . '/../templates/barra.php'
 ?>

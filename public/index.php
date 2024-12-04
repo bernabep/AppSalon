@@ -40,7 +40,7 @@ $router->get('/servicios/crear',[ServicioController::class,'crear']);
 $router->post('/servicios/crear',[ServicioController::class,'crear']);
 $router->get('/servicios/actualizar',[ServicioController::class,'actualizar']);
 $router->post('/servicios/actualizar',[ServicioController::class,'actualizar']);
-$router->post('/servicios/elimiar',[ServicioController::class,'eliminar']);
+$router->post('/servicios/eliminar',[ServicioController::class,'eliminar']);
 
 //API
 $router->get('/api/servicios',[APIController::class,'index']);

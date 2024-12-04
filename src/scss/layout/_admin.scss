@@ -16,6 +16,23 @@
       color: v.$blanco;
       font-weight: v.$regular;
     }
+  }
+}
+.servicios {
+  @extend .citas;
 
+  .acciones {
+    margin: 0;
+  }
+
+  .boton,
+  .boton-eliminar {
+    margin: 0 0 1rem 0;
+  }
+  @include m.tablet {
+    .boton,
+    .boton-eliminar {
+      margin: 0;
+    }
   }
 }

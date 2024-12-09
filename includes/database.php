@@ -1,6 +1,11 @@
 <?php
 
-$db = mysqli_connect(hostname:'localhost', username:'root', password:'root', database:'appsalon_mvc');
+$db = mysqli_connect(
+    hostname: $_ENV['DB_HOST'],
+    username: $_ENV['DB_USER'],
+    password: $_ENV['DB_PASS'],
+    database: $_ENV['DB_NAME']
+);
 $db->set_charset("utf8");
 
 if (!$db) {

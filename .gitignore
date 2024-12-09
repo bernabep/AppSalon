@@ -27,3 +27,5 @@ npm-debug.log*
 # Archivos compilados
 /dist
 /build
+
+/includes/.env

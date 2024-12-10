@@ -33,6 +33,8 @@ function isAuth(): void
 function isAdmin():void{
 
     if(!isset($_SESSION['admin'])){
+        debuguear("isAdmin");
+        
         header('Location: /');
     }
 }
